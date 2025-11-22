@@ -1,0 +1,201 @@
+{
+	"info": {
+		"_postman_id": "e03051a2-9cb8-4fb6-a69c-cd731a30e869",
+		"name": "Inkle Backend Assignment - Sneha",
+		"description": "# Inkle Backend Assignment\n\n## Overview\n\nThis API provides a complete backend solution for a social media platform with user authentication, post management, and social interactions including follows, blocks, and likes. Built as part of the Inkle backend assignment, this RESTful API enables developers to create engaging social networking features.\n\n## Base URL\n\n```\nhttps://inkle-backend-assignment-sneha.onrender.com\n\n ```\n\n## Authentication\n\nThis API uses **JWT (JSON Web Token)** bearer authentication.\n\n### Getting Started\n\n1. **Sign up** using the `/auth/signup` endpoint to create a new user account\n    \n2. **Log in** using the `/auth/login` endpoint to receive your JWT token\n    \n3. **Use the token** by setting it as a Bearer token in the Authorization header for all authenticated requests\n    \n\nThe collection is configured with Bearer token authentication at the collection level. After logging in, update the token in the collection's Authorization settings to automatically apply it to all requests.\n\n### Token Format\n\n```\nAuthorization: Bearer <your_jwt_token>\n\n ```\n\n## API Features\n\n### User Management\n\n- User registration with name, email, and password\n    \n- Secure login with JWT token generation\n    \n- Role-based permissions (owner/admin privileges)\n    \n\n### Post Management\n\n- Create posts with text content\n    \n- Retrieve all posts from the platform\n    \n- Permission-based post operations (only owners/admins can create/delete)\n    \n\n### Social Interactions\n\n- **Follow System**: Follow and unfollow other users\n    \n- **Block System**: Block and unblock users to control interactions\n    \n- **Like System**: Like and unlike posts\n    \n\n## Request Organization\n\n- **Root Level**: Authentication endpoints (signup, login) and post creation\n    \n- **USER ACTIONS Folder**: All social interaction endpoints (posts retrieval, follows, blocks, likes)\n    \n\n## Response Format\n\nAll responses are returned in JSON format with appropriate HTTP status codes:\n\n- `200 OK` - Successful GET/DELETE requests\n    \n- `201 Created` - Successful POST requests (user signup, post creation)\n    \n- `401 Unauthorized` - Missing or invalid authentication\n    \n- `403 Forbidden` - Insufficient permissions\n    \n- `404 Not Found` - Resource not found\n    \n\n## Common Patterns\n\n### Creating Resources\n\nPOST requests typically require a JSON body with the necessary fields. Authentication is required for most operations.\n\n### Path Parameters\n\nMany endpoints use path parameters to identify specific resources (e.g., `/follow/{userId}`, `/like/{postId}`).\n\n### Query Parameters\n\nSome endpoints accept query parameters for filtering or providing data (e.g., `?content=` for post creation).\n\n## Rate Limiting\n\nPlease be mindful of API usage. The service is hosted on Render and may have cold start delays if inactive.\n\n## Support\n\nFor issues or questions about this API, please refer to the individual request documentation below for detailed endpoint information.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "44960782"
+	},
+	"item": [
+		{
+			"name": "USER ACTIONS",
+			"item": [
+				{
+					"name": "Get All Posts",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "Follow User",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "Unfollow User",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI0IiwiZXhwIjoxNzYzOTIzMjcwfQ.06dpL4pNRLwYnimRqDOQR1m-iOCy8V2r0VUwUaj-DIk",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://inkle-backend-assignment-sneha.onrender.com/follow/2\n",
+							"protocol": "https",
+							"host": [
+								"inkle-backend-assignment-sneha",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"follow",
+								"2\n"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Block User",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "Unblock User",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "Like Post",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "Unlike Post",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "only owner/admin can create/delete",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "user signup",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"name\": \"Test User\",\r\n  \"email\": \"testuser@example.com\",\r\n  \"password\": \"test123\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://inkle-backend-assignment-sneha.onrender.com/auth/signup\n",
+					"protocol": "https",
+					"host": [
+						"inkle-backend-assignment-sneha",
+						"onrender",
+						"com"
+					],
+					"path": [
+						"auth",
+						"signup\n"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "user login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"email\": \"testuser@example.com\",\r\n  \"password\": \"test123\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://inkle-backend-assignment-sneha.onrender.com/auth/login",
+					"protocol": "https",
+					"host": [
+						"inkle-backend-assignment-sneha",
+						"onrender",
+						"com"
+					],
+					"path": [
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create post",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI0IiwiZXhwIjoxNzYzOTIzMjcwfQ.06dpL4pNRLwYnimRqDOQR1m-iOCy8V2r0VUwUaj-DIk",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
