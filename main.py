@@ -13,34 +13,28 @@ from app.routers.admin import router as admin_router
 from app.routers.like import router as like_router
 
 
-# Swagger authentication configuration
+# OAuth system (Swagger expects tokenUrl WITHOUT slash)
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="auth/login")
 
-
-# Create DB tables
+# Create database tables
 Base.metadata.create_all(bind=engine)
 
-
 app = FastAPI(
-    title="Inkle Backend Assignment API",
-    description="Full social activity backend including auth, feeds, follows, likes, admin access, and more.",
+    title="Inkle Backend Assignment",
+    description="Backend for Social Feed with authentication, posts, follows, blocks, likes, and admin roles.",
     version="1.0.0"
 )
 
-
-# ---------------------- CORS FIX ----------------------
-# Allows external tools like Hoppscotch, Swagger & frontend apps
+# ---- CORS FIX -----
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],        # allow all origins
+    allow_origins=["*"],
     allow_credentials=True,
-    allow_methods=["*"],        # allow GET, POST, PUT, DELETE, OPTIONS
-    allow_headers=["*"],        # allow Authorization, Content-Type, etc.
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
-# -------------------------------------------------------
 
-
-# ---------------------- ROUTERS ------------------------
+# ---- ROUTERS -----
 app.include_router(auth_router)
 app.include_router(posts_router)
 app.include_router(follow_router)
@@ -48,44 +42,38 @@ app.include_router(block_router)
 app.include_router(feed_router)
 app.include_router(admin_router)
 app.include_router(like_router)
-# -------------------------------------------------------
 
 
-# Custom Swagger UI so Bearer token input works properly
+# ---- CUSTOM SWAGGER WITH GLOBAL TOKEN SUPPORT ----
 def custom_openapi():
     if app.openapi_schema:
         return app.openapi_schema
 
-    schema = get_openapi(
-        title="Inkle Backend Assignment",
-        version="1.0.0",
-        description="API documentation for the full backend system.",
+    openapi_schema = get_openapi(
+        title=app.title,
+        version=app.version,
+        description=app.description,
         routes=app.routes,
     )
 
-    schema["components"]["securitySchemes"] = {
+    openapi_schema["components"]["securitySchemes"] = {
         "BearerAuth": {
             "type": "http",
             "scheme": "bearer",
-            "bearerFormat": "JWT",
+            "bearerFormat": "JWT"
         }
     }
 
-    # Apply security to all paths automatically
-    for path in schema["paths"].values():
+    for path in openapi_schema["paths"].values():
         for method in path.values():
             method.setdefault("security", [{"BearerAuth": []}])
 
-    app.openapi_schema = schema
-    return schema
-
+    app.openapi_schema = openapi_schema
+    return app.openapi_schema
 
 app.openapi = custom_openapi
 
 
 @app.get("/")
 def home():
-    return {
-        "status": "running",
-        "message": "🚀 Backend deployed successfully! Use /docs for API playground."
-    }
+    return {"status": "running", "message": "Welcome to the API 🚀"}
